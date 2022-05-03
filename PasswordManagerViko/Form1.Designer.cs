@@ -48,7 +48,7 @@
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(12, 61);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(589, 364);
+            this.listBox1.Size = new System.Drawing.Size(738, 364);
             this.listBox1.TabIndex = 1;
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
@@ -56,7 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(761, 450);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";

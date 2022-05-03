@@ -12,7 +12,7 @@ namespace PasswordManagerViko
     public class AESHelper
     {
 
-        public static void AES_Encrypt(string inputFilePath, string outputfilePath)
+        public static void AES_EncryptFile(string inputFilePath, string outputfilePath)
         {
             string EncryptionKey = "jWnZq4t7w!z%C*F-JaNdRgUkXp2s5u8x";
             using (Aes encryptor = Aes.Create())
@@ -37,7 +37,64 @@ namespace PasswordManagerViko
             }
         }
 
-        public static void AES_Decrypt(string inputFilePath, string outputfilePath)
+        public static string AES_EncryptString(string pass)
+        {
+            byte[] encrypted;
+            string EncryptionKey = "G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThW";
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x43, 0x29, 0x31, 0x6e, 0x99, 0x9d, 0x73, 0x6f, 0x72, 0x61, 0x64, 0x65, 0x9f });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(pass);
+                        }
+                        encrypted = msEncrypt.ToArray();
+                    }
+                }
+            }
+
+            return System.Convert.ToBase64String(encrypted);
+        }
+
+        public static string AES_DecryptString(string pass)
+        {
+            byte[] passBytes = System.Convert.FromBase64String(pass);
+            string plainText = "";
+            string EncryptionKey = "G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThW";
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x43, 0x29, 0x31, 0x6e, 0x99, 0x9d, 0x73, 0x6f, 0x72, 0x61, 0x64, 0x65, 0x9f });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream msDecrypt = new MemoryStream(passBytes))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, encryptor.CreateDecryptor(), CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            int data;
+                            while ((data = csDecrypt.ReadByte()) != -1)
+                            {
+                                plainText = srDecrypt.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return plainText;
+        }
+
+
+
+
+        public static void AES_DecryptFile(string inputFilePath, string outputfilePath)
         {
             string EncryptionKey = "jWnZq4t7w!z%C*F-JaNdRgUkXp2s5u8x";
             using (Aes encryptor = Aes.Create())
@@ -61,6 +118,5 @@ namespace PasswordManagerViko
                 }
             }
         }
-
     }
 }

@@ -21,7 +21,9 @@ namespace PasswordManagerViko
 
         private void button1_Click(object sender, EventArgs e)
         {
-            cForm.passList.Add(new PassInfo(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text));
+            string pwd = AESHelper.AES_EncryptString(textBox3.Text);
+            cForm.passList.Add(new PassInfo(textBox1.Text, textBox2.Text, pwd, textBox4.Text, textBox5.Text));
+            cForm.LoadInfo();
             MessageBox.Show("OK");
         }
     }
