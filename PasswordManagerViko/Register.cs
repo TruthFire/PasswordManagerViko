@@ -74,7 +74,7 @@ namespace PasswordManagerViko
                 }
             }
 
-            MessageBox.Show("OK?");
+            MessageBox.Show("OK");
         }
     }
 }

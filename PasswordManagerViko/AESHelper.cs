@@ -43,7 +43,7 @@ namespace PasswordManagerViko
             string EncryptionKey = "G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThW";
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x43, 0x29, 0x31, 0x6e, 0x99, 0x9d, 0x73, 0x6f, 0x72, 0x61, 0x64, 0x65, 0x9f });
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
                 encryptor.Key = pdb.GetBytes(32);
                 encryptor.IV = pdb.GetBytes(16);
                 using (MemoryStream msEncrypt = new MemoryStream())
@@ -69,7 +69,7 @@ namespace PasswordManagerViko
             string EncryptionKey = "G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThW";
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x43, 0x29, 0x31, 0x6e, 0x99, 0x9d, 0x73, 0x6f, 0x72, 0x61, 0x64, 0x65, 0x9f });
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
                 encryptor.Key = pdb.GetBytes(32);
                 encryptor.IV = pdb.GetBytes(16);
                 using (MemoryStream msDecrypt = new MemoryStream(passBytes))
@@ -78,11 +78,9 @@ namespace PasswordManagerViko
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-                            int data;
-                            while ((data = csDecrypt.ReadByte()) != -1)
-                            {
+                            
                                 plainText = srDecrypt.ReadToEnd();
-                            }
+                            
                         }
                     }
                 }
