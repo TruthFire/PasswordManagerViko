@@ -119,5 +119,5 @@ Paleidus sistemą pirmą kartą reikalinga vartotojo paskyros sukūrimo forma: s
 Prisijungimas prie sistemos: vartotojui prijungus failas dešifruojamas. (3 taškai)
 Atsitiktinio slaptažodžio generavimo funkcija (panaudojama kuriant naują slaptažodį). (2 taškai)
 Papildoma funkcija slaptažodžio paieškai pagal pavadinimą: suradus tinkamą slaptažodį jis iškart nerodomas, pateikiamas tik jo užšifruotas rezultatas. Paspaudus mygtuką rodyti parodomas slaptažodis. (2 taškai)
-Mygtukas galintis nukopijuoti slaptažodį į iškarpinę. (2 taškai) 
+Mygtukas galintis nukopijuoti slaptažodį į iškarpinę. (2 taškai) DONE 
 */
