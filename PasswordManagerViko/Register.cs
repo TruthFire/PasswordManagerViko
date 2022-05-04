@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace PasswordManagerViko
 {
     public partial class Register : Form
     {
+        List<Users.UserList> users = new();
         public Register()
         {
             InitializeComponent();
@@ -36,9 +38,43 @@ namespace PasswordManagerViko
                 ul.id = 1;
                 ul.name = textBox1.Text;
                 ul.password = textBox2.Text;
+                users.Add(ul);
+                ui.userList = users;
+                root.userInfo = ui;
 
-                ui.userList.Add(ui);
+                using (StreamWriter file = File.CreateText(@"users.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, root);
+                }
+
             }
+            else
+            {
+                Users.Root users;
+                using (StreamReader file = File.OpenText(@"users.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    users = (Users.Root)serializer.Deserialize(file, typeof(Users.Root));
+                    users.userInfo.totalUsers++;
+                    Users.UserList ul = new();
+                    ul.id = users.userInfo.totalUsers;
+                    ul.name = textBox1.Text;
+                    ul.password = textBox2.Text;
+                    users.userInfo.userList.Add(ul);
+
+                    
+
+                }
+
+                using (StreamWriter file = File.CreateText(@"users.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, users);
+                }
+            }
+
+            MessageBox.Show("OK?");
         }
     }
 }
