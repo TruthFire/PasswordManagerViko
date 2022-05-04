@@ -18,9 +18,7 @@ namespace PasswordManagerViko
         {
             CheckFile();
             InitializeComponent();
-            MessageBox.Show(AESHelper.AES_EncryptString("123"));
-            Clipboard.SetText(AESHelper.AES_EncryptString("123"));
-            MessageBox.Show(AESHelper.AES_DecryptString("vqzOt4qTWC5eMIgoSvKvAQ=="));
+           
         }
 
         void CheckFile()
@@ -52,7 +50,7 @@ namespace PasswordManagerViko
                 string name = textBox1.Text;
                 string pwd = textBox2.Text;
 
-                currUser = users.userInfo.userList.Where(x => x.name.Contains(name) && x.password.Contains(pwd)).FirstOrDefault();
+                currUser = users.userInfo.userList.Find(x => x.name == name && x.password == pwd);
                 if (currUser != null )
                 {
                     Form1 f1 = new();

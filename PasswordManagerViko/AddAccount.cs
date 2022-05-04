@@ -23,7 +23,7 @@ namespace PasswordManagerViko
         {
             string pwd = AESHelper.AES_EncryptString(textBox3.Text);
             cForm.passList.Add(new PassInfo(textBox1.Text, textBox2.Text, pwd, textBox4.Text, textBox5.Text));
-            cForm.LoadInfo();
+            cForm.LoadInfo(cForm.passList);
             MessageBox.Show("OK");
         }
     }
