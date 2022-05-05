@@ -18,12 +18,15 @@ namespace PasswordManagerViko
         public List<PassInfo> passList = new List<PassInfo>();
         public List<PassInfo> currList = new List<PassInfo>();
         bool passwordsShown = false;
-        public Form1()
+        string uName;
+        public Form1(string uName)
         {
+            this.uName = uName;
             CheckCSVFile();
             InitializeComponent();
             LoadInfo(passList);
             currList = passList;
+            
         }
 
 
@@ -31,39 +34,45 @@ namespace PasswordManagerViko
         {
             listBox1.Items.Clear();
             listBox1.Items.Add("name - login - password - link - comment");
-            foreach (PassInfo pass in plist)
+            if (plist != null)
             {
+                foreach (PassInfo pass in plist)
+                {
 
-                listBox1.Items.Add(pass);
+                    listBox1.Items.Add(pass);
+                }
             }
         }
 
         void CheckCSVFile()
         {
-            if (!File.Exists(@"passwords.enc"))
+            if (!File.Exists(@$"passwords_{uName}.enc"))
             {
-                if (!File.Exists(@"passwords.csv"))
+                if (!File.Exists(@$"passwords_{uName}.csv"))
                 {
-                    var myFile = File.Create(@"passwords.csv");
+                    var myFile = File.Create(@$"passwords_{uName}.csv");
                     myFile.Close();
 
                 }
-                AESHelper.AES_EncryptFile(@"passwords.csv", @"passwords.enc");
-                File.Delete(@"passwords.aes");
+                
 
             }
             else
             {
 
-                AESHelper.AES_DecryptFile(@"passwords.enc", @"passwords.csv");
-                File.Delete(@"passwords.enc");
-                if (new FileInfo(@"passwords.csv").Length != 0)
+                AESHelper.AES_DecryptFile(@$"passwords_{uName}.enc", @$"passwords_{uName}.csv");
+                File.Delete(@$"passwords_{uName}.enc");
+                if (new FileInfo(@$"passwords_{uName}.csv").Length != 0)
                 {
-                    using (var reader = new StreamReader(@"passwords.csv"))
+                    using (var reader = new StreamReader(@$"passwords_{uName}.csv"))
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
                         while (csv.Read())
                             passList.Add(csv.GetRecord<PassInfo>());
+                    }
+                    if(passList[0] == null)
+                    {
+                        passList = null;
                     }
                 }
             }
@@ -77,7 +86,7 @@ namespace PasswordManagerViko
                     pass.password = AESHelper.AES_EncryptString(pass.password);
                 }
             }
-            using (var writer = new StreamWriter("passwords.csv"))
+            using (var writer = new StreamWriter(@$"passwords_{uName}.csv"))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.WriteRecords(passList);
@@ -177,9 +186,12 @@ namespace PasswordManagerViko
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            onAppExit();
-            AESHelper.AES_EncryptFile(@"passwords.csv", @"passwords.enc");
-            File.Delete(@"passwords.csv");
+            if (passList != null)
+            {
+                onAppExit();
+            }
+            AESHelper.AES_EncryptFile(@$"passwords_{uName}.csv", @$"passwords_{uName}.enc");
+            File.Delete(@$"passwords_{uName}.csv");
         }
     }
 }
@@ -192,7 +204,7 @@ Naujo slaptažodžio išsaugojimas: užpildžius formą (pavadinimas, slaptažod
 Slaptažodžio paieška pagal pavadinimą. (2 taškai) DONE
 Slaptažodžio atnaujinimas pagal pavadinimą: suradus tinkamą slaptažodį jis pakeičiamas naujai įvestu. Naujam slaptažodžiui taip pat turi būti pritaikytas šifravimo algoritmas. (2 taškai) DONE
 Slaptažodžio ištrynimas pagal pavadinimą: suradus tinkamą slaptažodį visa informacija apie jį ištrinama iš .csv arba .txt failo. (2 taškai)
-Paleidus sistemą pirmą kartą reikalinga vartotojo paskyros sukūrimo forma: slapyvardis, slaptažodis (šifruojamas PBKDF2, Bcrypt, Scrypt, Argon2 arba pasirenkant maišos funkciją). Kuriant vartotojo paskyrą yra sugeneruojamas ir vartotojui priskiriamas .csv arba .txt failas. Failas yra užšifruojamas AES algoritmu. (3 taškai) Partially done
+Paleidus sistemą pirmą kartą reikalinga vartotojo paskyros sukūrimo forma: slapyvardis, slaptažodis (šifruojamas PBKDF2, Bcrypt, Scrypt, Argon2 arba pasirenkant maišos funkciją). Kuriant vartotojo paskyrą yra sugeneruojamas ir vartotojui priskiriamas .csv arba .txt failas. Failas yra užšifruojamas AES algoritmu. (3 taškai) done
 Prisijungimas prie sistemos: vartotojui prijungus failas dešifruojamas. (3 taškai)
 Atsitiktinio slaptažodžio generavimo funkcija (panaudojama kuriant naują slaptažodį). (2 taškai)
 Papildoma funkcija slaptažodžio paieškai pagal pavadinimą: suradus tinkamą slaptažodį jis iškart nerodomas, pateikiamas tik jo užšifruotas rezultatas. Paspaudus mygtuką rodyti parodomas slaptažodis. (2 taškai) DONE

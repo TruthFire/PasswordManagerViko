@@ -53,7 +53,7 @@ namespace PasswordManagerViko
                 currUser = users.userInfo.userList.Find(x => x.name == name && BcryptHelper.CheckPassword(pwd, x.password));
                 if (currUser != null )
                 {
-                    Form1 f1 = new();
+                    Form1 f1 = new(textBox1.Text);
                     f1.Show();
                 }
 
