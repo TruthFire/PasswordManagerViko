@@ -37,7 +37,7 @@ namespace PasswordManagerViko
                 ui.totalUsers = 1;
                 ul.id = 1;
                 ul.name = textBox1.Text;
-                ul.password = textBox2.Text;
+                ul.password = BcryptHelper.HashPassword(textBox2.Text);
                 users.Add(ul);
                 ui.userList = users;
                 root.userInfo = ui;
@@ -60,7 +60,7 @@ namespace PasswordManagerViko
                     Users.UserList ul = new();
                     ul.id = users.userInfo.totalUsers;
                     ul.name = textBox1.Text;
-                    ul.password = textBox2.Text;
+                    ul.password = BcryptHelper.HashPassword(textBox2.Text);
                     users.userInfo.userList.Add(ul);
 
                     
