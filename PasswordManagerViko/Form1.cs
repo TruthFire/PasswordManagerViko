@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PasswordManagerViko
 {
@@ -131,7 +132,7 @@ namespace PasswordManagerViko
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var a = passList.Where(x => x.name.Contains(textBox1.Text)).ToList();
+            var a = DeepCopy(passList.Where(x => x.name.Contains(textBox1.Text)).ToList());
             // MessageBox.Show(a.ToString());
             if (a.Count() != 0)
             {
@@ -147,6 +148,7 @@ namespace PasswordManagerViko
 
         private void button3_Click(object sender, EventArgs e)
         {
+           
             LoadInfo(passList);
             currList = passList;
             textBox1.Text = "";
@@ -162,7 +164,7 @@ namespace PasswordManagerViko
         {
             if (!passwordsShown)
             {
-                List<PassInfo> a = new(currList.ToList());
+                var a = DeepCopy(currList);
                 foreach (var item in a)
                 {
                     item.password = AESHelper.AES_DecryptString(item.password);
@@ -173,7 +175,7 @@ namespace PasswordManagerViko
 
             else
             {
-                List<PassInfo> a = new(currList.ToList());
+                var a = DeepCopy(currList);
                 foreach (var item in a)
                 {
                     item.password = AESHelper.AES_EncryptString(item.password);
@@ -200,7 +202,20 @@ namespace PasswordManagerViko
             DeletePassword dp = new(passList, this);
             dp.Show();
         }
+
+        public static T DeepCopy<T>(T item)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, item);
+            stream.Seek(0, SeekOrigin.Begin);
+            T result = (T)formatter.Deserialize(stream);
+            stream.Close();
+            return result;
+        }
     }
+
+    
 }
 
 

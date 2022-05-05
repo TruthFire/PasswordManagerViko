@@ -56,6 +56,10 @@ namespace PasswordManagerViko
                     Form1 f1 = new(textBox1.Text);
                     f1.Show();
                 }
+                else
+                {
+                    MessageBox.Show("No such user");
+                }
 
 
 

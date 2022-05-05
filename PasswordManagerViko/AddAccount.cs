@@ -21,11 +21,36 @@ namespace PasswordManagerViko
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string pwd = AESHelper.AES_EncryptString(textBox3.Text);
-            if(cForm.passList == null) cForm.passList = new List<PassInfo>();
-            cForm.passList.Add(new PassInfo(textBox1.Text, textBox2.Text, pwd, textBox4.Text, textBox5.Text));
-            cForm.LoadInfo(cForm.passList);
-            MessageBox.Show("OK");
+            if(!String.IsNullOrEmpty(textBox1.Text) && !String.IsNullOrEmpty(textBox2.Text) && !String.IsNullOrEmpty(textBox3.Text) && !String.IsNullOrEmpty(textBox4.Text) && !String.IsNullOrEmpty(textBox5.Text))
+            {
+                string pwd = AESHelper.AES_EncryptString(textBox3.Text);
+                if (cForm.passList == null) cForm.passList = new List<PassInfo>();
+                cForm.passList.Add(new PassInfo(textBox1.Text, textBox2.Text, pwd, textBox4.Text, textBox5.Text));
+                cForm.LoadInfo(cForm.passList);
+                MessageBox.Show("OK");
+            }
+            else
+            {
+                MessageBox.Show("Not all fields are filled");
+            }
+           
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            Random random = new Random();
+
+            string newPwd = "";
+            int pwdLength = random.Next(10, 24);
+            for (int i = 0; i < pwdLength; i++)
+            {
+                newPwd += (char)random.Next(33, 122);
+            }
+
+            this.textBox3.Text = newPwd;
+
+
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PasswordManagerViko
 {
+    [Serializable]
     public class PassInfo
     {
 
